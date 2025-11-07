@@ -1,0 +1,95 @@
+# Prompt untuk GitHub Copilot (paste di editor atau chat Copilot di VSCode)
+
+Kamu adalah asisten coding profesional. Tugasmu: bantu saya membangun website **Group Decision Support System (GDSS)** untuk menentukan **prioritas proyek IT** di perusahaan, dengan backend PHP + MySQL.
+
+## 🎯 Tujuan Proyek
+Website ini digunakan untuk membantu pengambilan keputusan bersama antara tiga bidang: **Teknis, Administrasi, dan Keuangan**, dalam menentukan proyek mana yang perlu diprioritaskan.
+
+## ⚙️ Spesifikasi Teknis
+- Bahasa: PHP 8+, HTML5, CSS3, Bootstrap 5 (CDN)
+- Database: MySQL (gunakan PDO)
+- Tools: VSCode
+- Server lokal: PHP built-in server (`php -S localhost:8000`)
+- Folder utama: `gdss-web/`
+
+## 📁 Struktur Folder
+gdss-web/
+├─ config.php → koneksi database PDO
+├─ functions.php → fungsi login, evaluasi WP, BORDA
+├─ index.php → halaman login
+├─ dashboard.php → halaman utama user setelah login
+├─ projects.php → daftar proyek
+├─ evaluate.php → form penilaian proyek per bidang
+├─ results.php → hasil perhitungan WP + BORDA
+├─ logout.php
+├─ install_gdss.sql → script database
+└─ assets/
+├─ css/style.css → desain kustom (modern color palette + animasi)
+└─ images/hero.jpg → header background (opsional)
+
+markdown
+Copy code
+
+## 🧠 Fitur Utama
+1. **Login multi-role**  
+   Role: `admin`, `teknis`, `administrasi`, `keuangan`.  
+   Autentikasi sederhana pakai session (boleh plaintext password dulu).
+
+2. **CRUD dasar proyek**  
+   - Tampilkan daftar proyek dari tabel `projects`.
+   - Setiap proyek memiliki kode, nama, lokasi, tanggal, dan deskripsi.
+
+3. **Penilaian (Weighted Product)**  
+   - Tiap bidang memiliki kriteria & bobot sendiri.  
+   - User dengan role tertentu menilai semua proyek dengan skor numerik.  
+   - Hasil dikalkulasi otomatis dengan rumus Weighted Product (WP).
+
+4. **Agregasi Hasil (Metode BORDA)**  
+   - Ranking WP dari ketiga bidang digabung pakai metode BORDA tertimbang.  
+   - Tampilkan proyek prioritas berdasarkan total skor BORDA tertinggi.
+
+5. **UI & Desain Modern**  
+   - Gunakan Bootstrap 5 + CSS gradient modern (teal, indigo, amber).  
+   - Gunakan animasi CSS ringan (hover, fade, pulse).  
+   - Responsif dan terlihat profesional seperti dashboard web modern.
+
+6. **Database yang Dibutuhkan**
+   - `users(id, username, password, fullname, role)`
+   - `projects(id, code, name, location, date_offer, description)`
+   - `criteria(id, part, name, weight, type)`
+   - `evaluations(id, project_id, user_id, criteria_id, score)`
+   - `part_weights(part, weight)`
+
+## 🧩 Metode Perhitungan
+- **Weighted Product (WP):**
+V_i = Π (x_ij ^ w_j)
+
+markdown
+Copy code
+dengan normalisasi nilai (benefit → x/max, cost → min/x)
+- **BORDA:**
+- Ranking tiap bagian dikonversi ke poin (misal 5,4,3,2,1)
+- Dikalikan bobot bagian (teknis=7, administrasi=4, keuangan=2)
+- Jumlah total menentukan urutan prioritas akhir
+
+## 🎨 Style & Animasi
+- Gunakan color palette modern:  
+indigo `#0f172a`, teal `#06b6d4`, amber `#f59e0b`
+- Animasi: hover card lift, pulse badge, gradient background
+- Contoh class: `.glass`, `.hero-card`, `.fade-highlight`
+
+## 🚀 Instruksi untuk Copilot
+- Buatkan **file PHP** untuk masing-masing halaman berdasarkan struktur di atas.
+- Gunakan **Bootstrap card layout** dengan efek animasi ringan.
+- Pastikan semua query menggunakan **prepared statements (PDO)**.
+- Tambahkan komentar penjelasan singkat di setiap file.
+- Sertakan **contoh isi database SQL** sesuai tabel di atas.
+- Pastikan website dapat dijalankan langsung di VSCode dengan `php -S localhost:8000`.
+
+Output yang diharapkan:
+✅ File PHP lengkap (frontend + backend)
+✅ File `install_gdss.sql`
+✅ CSS modern dengan animasi
+✅ Website bisa login, menilai, dan menampilkan hasil WP + BORDA
+
+Mulai dari pembuatan struktur database (`install_gdss.sql`) lalu lanjutkan ke `config.php` dan `functions.php`.
