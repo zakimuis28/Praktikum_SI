@@ -45,16 +45,16 @@ $flashMessages = getFlashMessages();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
     
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         
         .login-container {
@@ -66,20 +66,19 @@ $flashMessages = getFlashMessages();
         }
         
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             overflow: hidden;
-            max-width: 1000px;
+            max-width: 900px;
             width: 100%;
         }
         
         .login-left {
-            background: linear-gradient(135deg, #06b6d4, #f59e0b);
+            background: linear-gradient(135deg, #3B82F6, #1E40AF);
             color: white;
-            padding: 60px 40px;
+            padding: 50px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -87,31 +86,31 @@ $flashMessages = getFlashMessages();
         }
         
         .login-right {
-            padding: 60px 40px;
+            padding: 50px 40px;
         }
         
         .demo-accounts {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(245, 158, 11, 0.1));
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            border-radius: 15px;
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
         }
         
         .demo-account {
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.2s ease;
             cursor: pointer;
         }
         
         .demo-account:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: #06b6d4;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-color: #3B82F6;
         }
         
         .demo-account:last-child {
@@ -132,36 +131,39 @@ $flashMessages = getFlashMessages();
         }
         
         .form-control {
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            border: 1px solid #D1D5DB;
             padding: 12px 16px;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s ease;
         }
         
         .form-control:focus {
-            border-color: #06b6d4;
-            box-shadow: 0 0 0 0.2rem rgba(6, 182, 212, 0.25);
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline: none;
         }
         
         .btn-login {
-            background: linear-gradient(135deg, #06b6d4, #f59e0b);
+            background: #3B82F6;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 12px 30px;
-            font-weight: 600;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+            background: #1D4ED8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             color: white;
         }
         
         .system-logo {
-            font-size: 4rem;
             margin-bottom: 20px;
             opacity: 0.9;
         }
@@ -184,11 +186,11 @@ $flashMessages = getFlashMessages();
         }
         
         .reference-note {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
             padding: 15px;
             margin-top: 20px;
-            font-size: 0.85rem;
+            font-size: 12px;
             text-align: center;
         }
         
@@ -210,30 +212,38 @@ $flashMessages = getFlashMessages();
                 <!-- Left Panel - System Info -->
                 <div class="col-lg-5">
                     <div class="login-left">
-                        <div class="system-logo">
-                            <i class="bi bi-diagram-3"></i>
+                        <div class="system-logo mb-4">
+                            <img src="assets/images/logo.svg" alt="GDSS Logo" width="80" height="80">
                         </div>
                         
-                        <h2 class="mb-3 fw-bold">GDSS</h2>
-                        <h5 class="mb-4 fw-normal opacity-90">Group Decision Support System</h5>
+                        <h2 class="mb-3 fw-bold" style="font-family: 'Poppins', sans-serif;">GDSS</h2>
+                        <h6 class="mb-2 fw-normal opacity-90" style="font-size: 14px;">Group Decision Support System</h6>
+                        <p class="mb-4 small opacity-75" style="font-size: 12px;">
+                            <i class="bi bi-diagram-2 me-1"></i>
+                            <strong>AHP + BORDA Method</strong>
+                        </p>
                         
                         <p class="mb-4 opacity-80">
                             Sistem pendukung keputusan kelompok untuk menentukan prioritas proyek IT 
-                            menggunakan metode Weighted Product dan agregasi BORDA.
+                            menggunakan metode Analytic Hierarchy Process (AHP) dan agregasi BORDA.
                         </p>
                         
                         <div class="feature-list">
                             <div class="feature-item">
-                                <i class="bi bi-people-fill"></i>
-                                <span>Multi-Role Decision Making</span>
+                                <i class="bi bi-diagram-2"></i>
+                                <span>AHP Pairwise Comparison</span>
                             </div>
                             <div class="feature-item">
-                                <i class="bi bi-calculator"></i>
-                                <span>Weighted Product Method</span>
+                                <i class="bi bi-check-circle"></i>
+                                <span>Consistency Validation (CR ≤ 0.1)</span>
                             </div>
                             <div class="feature-item">
                                 <i class="bi bi-trophy"></i>
                                 <span>BORDA Consensus Aggregation</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="bi bi-people-fill"></i>
+                                <span>Multi-Role Decision Making</span>
                             </div>
                             <div class="feature-item">
                                 <i class="bi bi-shield-check"></i>
@@ -244,9 +254,9 @@ $flashMessages = getFlashMessages();
                         <!-- Reference Citation -->
                         <div class="reference-note">
                             <i class="bi bi-journal-text me-2"></i>
-                            <strong>Based on SINTA Research:</strong><br>
-                            Cahyana, N.H. & Aribowo, A.S. (2014)<br>
-                            <em>"GDSS untuk Menentukan Prioritas Proyek"</em>
+                            <strong>Enhanced with AHP Method:</strong><br>
+                            Saaty Scale (1-9) Pairwise Comparison<br>
+                            <em>Analytic Hierarchy Process + BORDA</em>
                         </div>
                     </div>
                 </div>
@@ -280,56 +290,60 @@ $flashMessages = getFlashMessages();
                         
                         <!-- Demo Accounts -->
                         <div class="demo-accounts">
-                            <h6 class="mb-3 fw-bold text-center">
+                            <h6 class="mb-2 fw-bold text-center">
                                 <i class="bi bi-key me-2"></i>Akun Demo - Klik untuk Login Cepat
                             </h6>
+                            <p class="text-center small text-muted mb-3">
+                                <i class="bi bi-arrow-repeat me-1"></i>
+                                <strong>AHP Workflow:</strong> Pairwise Comparison → Consistency Check → Global Ranking
+                            </p>
                             
-                            <div class="demo-account" onclick="fillLogin('admin', 'admin123')">
+                            <div class="demo-account" onclick="fillLogin('supervisor', 'supervisor123')">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong><i class="bi bi-shield-check me-2"></i>Administrator</strong>
-                                    <span class="badge bg-danger role-badge">ADMIN</span>
+                                    <strong><i class="bi bi-shield-check me-2"></i>Supervisor</strong>
+                                    <span class="badge bg-danger role-badge">SUPERVISOR</span>
                                 </div>
                                 <div class="credentials">
-                                    <i class="bi bi-person me-1"></i>Username: <strong>admin</strong> | 
-                                    <i class="bi bi-lock me-1"></i>Password: <strong>admin123</strong>
+                                    <i class="bi bi-person me-1"></i>Username: <strong>supervisor</strong> | 
+                                    <i class="bi bi-lock me-1"></i>Password: <strong>supervisor123</strong>
                                 </div>
                                 <small class="text-muted">Kelola proyek, finalisasi konsensus & laporan</small>
                             </div>
                             
                             <div class="demo-account" onclick="fillLogin('teknis', 'teknis123')">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong><i class="bi bi-cpu me-2"></i>Tim Teknis</strong>
+                                    <strong><i class="bi bi-cpu me-2"></i>Bidang Teknis</strong>
                                     <span class="badge bg-primary role-badge">TEKNIS</span>
                                 </div>
                                 <div class="credentials">
                                     <i class="bi bi-person me-1"></i>Username: <strong>teknis</strong> | 
                                     <i class="bi bi-lock me-1"></i>Password: <strong>teknis123</strong>
                                 </div>
-                                <small class="text-muted">Evaluasi 5 kriteria teknis (Bobot: 53.8%)</small>
+                                <small class="text-muted">AHP Evaluasi 5 kriteria teknis (Bobot BORDA: 7/13)</small>
                             </div>
                             
-                            <div class="demo-account" onclick="fillLogin('administrasi', 'admin123')">
+                            <div class="demo-account" onclick="fillLogin('administrasi', 'administrasi123')">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong><i class="bi bi-file-text me-2"></i>Tim Administrasi</strong>
+                                    <strong><i class="bi bi-file-text me-2"></i>Bidang Administrasi</strong>
                                     <span class="badge bg-success role-badge">ADMINISTRASI</span>
                                 </div>
                                 <div class="credentials">
                                     <i class="bi bi-person me-1"></i>Username: <strong>administrasi</strong> | 
-                                    <i class="bi bi-lock me-1"></i>Password: <strong>admin123</strong>
+                                    <i class="bi bi-lock me-1"></i>Password: <strong>administrasi123</strong>
                                 </div>
-                                <small class="text-muted">Evaluasi 4 kriteria administrasi (Bobot: 30.8%)</small>
+                                <small class="text-muted">AHP Evaluasi 4 kriteria administrasi (Bobot BORDA: 4/13)</small>
                             </div>
                             
                             <div class="demo-account" onclick="fillLogin('keuangan', 'keuangan123')">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <strong><i class="bi bi-currency-dollar me-2"></i>Tim Keuangan</strong>
+                                    <strong><i class="bi bi-currency-dollar me-2"></i>Bidang Keuangan</strong>
                                     <span class="badge bg-warning role-badge">KEUANGAN</span>
                                 </div>
                                 <div class="credentials">
                                     <i class="bi bi-person me-1"></i>Username: <strong>keuangan</strong> | 
                                     <i class="bi bi-lock me-1"></i>Password: <strong>keuangan123</strong>
                                 </div>
-                                <small class="text-muted">Evaluasi 3 kriteria keuangan (Bobot: 15.4%)</small>
+                                <small class="text-muted">AHP Evaluasi 3 kriteria keuangan (Bobot BORDA: 2/13)</small>
                             </div>
                         </div>
                         
@@ -380,7 +394,12 @@ $flashMessages = getFlashMessages();
                         <div class="text-center mt-4">
                             <small class="text-muted">
                                 <i class="bi bi-info-circle me-1"></i>
-                                Implementasi GDSS berdasarkan artikel terakreditasi SINTA
+                                GDSS dengan Analytic Hierarchy Process & BORDA Consensus
+                            </small>
+                            <br>
+                            <small class="text-muted mt-1 d-block">
+                                <i class="bi bi-diagram-2 me-1"></i>
+                                Pairwise Comparison • Consistency Check • Multi-Criteria Decision Analysis
                             </small>
                         </div>
                     </div>
@@ -401,14 +420,26 @@ $flashMessages = getFlashMessages();
             
             // Add visual feedback
             const demoAccounts = document.querySelectorAll('.demo-account');
-            demoAccounts.forEach(account => account.style.borderColor = 'rgba(0, 0, 0, 0.1)');
+            demoAccounts.forEach(account => {
+                account.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+                account.style.backgroundColor = 'white';
+            });
             
             event.currentTarget.style.borderColor = '#06b6d4';
             event.currentTarget.style.backgroundColor = 'rgba(6, 182, 212, 0.1)';
             
-            // Focus on login button
+            // Show AHP info
+            const roleMap = {
+                'supervisor': 'Supervisor - Kelola sistem & finalisasi konsensus',
+                'teknis': 'Bidang Teknis - Perbandingan berpasangan 5 kriteria teknis',
+                'administrasi': 'Bidang Administrasi - Perbandingan berpasangan 4 kriteria administrasi', 
+                'keuangan': 'Bidang Keuangan - Perbandingan berpasangan 3 kriteria keuangan'
+            };
+            
+            // Focus on login button with role info
             setTimeout(() => {
                 document.querySelector('.btn-login').focus();
+                console.log(`Selected: ${roleMap[username] || username}`);
             }, 200);
         }
         

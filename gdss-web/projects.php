@@ -12,9 +12,9 @@ if (!isLoggedIn()) {
     redirect('index.php');
 }
 
-// Cek role admin
-if (!hasRole('admin')) {
-    setFlashMessage('error', 'Akses ditolak. Hanya admin yang dapat mengelola proyek.');
+// Cek role supervisor
+if (!hasRole('supervisor')) {
+    setFlashMessage('error', 'Akses ditolak. Hanya supervisor yang dapat mengelola proyek.');
     redirect('dashboard.php');
 }
 
@@ -108,39 +108,51 @@ $flashMessages = getFlashMessages();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link href="assets/css/style.css" rel="stylesheet">
     
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8FAFC;
+        }
         .project-card {
             transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            background: white;
         }
         .project-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            border-color: #3B82F6;
         }
         .project-status {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
             border-radius: 20px;
         }
         .action-buttons .btn {
-            padding: 0.375rem 0.75rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            padding: 6px 12px;
             margin: 0 2px;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #06b6d4, #f59e0b);">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">
-                <i class="bi bi-diagram-3 me-2"></i>
-                GDSS
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <img src="assets/images/logo.svg" alt="GDSS Logo" width="32" height="32" class="me-2">
+                <span style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #3B82F6;">GDSS</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -149,18 +161,41 @@ $flashMessages = getFlashMessages();
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">
-                            <i class="bi bi-house me-1"></i>Dashboard
+                    <!-- Management Section (Supervisor & General) -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; background: #3B82F6; color: white; border-radius: 6px; font-weight: 600; padding: 8px 12px;">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Management
                         </a>
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><a class="dropdown-item" href="dashboard.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-house me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item active" href="projects.php" style="font-family: 'Poppins', sans-serif; color: #3B82F6; font-size: 14px; font-weight: 600;">
+                                <i class="bi bi-folder me-2"></i>Kelola Proyek
+                            </a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="projects.php">
-                            <i class="bi bi-folder me-1"></i>Proyek
+                    
+                    <!-- Evaluation Section (Non-Supervisor Only) -->
+                    <?php if (!hasRole('supervisor')): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
+                            <i class="bi bi-clipboard-data me-1"></i>Evaluasi
                         </a>
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><a class="dropdown-item" href="evaluate.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-clipboard-check me-2"></i>Evaluasi BORDA
+                            </a></li>
+                            <li><a class="dropdown-item" href="ahp_comparison.php?step=criteria" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-diagram-2 me-2"></i>Evaluasi AHP
+                            </a></li>
+                        </ul>
                     </li>
+                    <?php endif; ?>
+                    
+                    <!-- Results Section -->
                     <li class="nav-item">
-                        <a class="nav-link" href="results.php">
+                        <a class="nav-link" href="results.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
                             <i class="bi bi-trophy me-1"></i>Hasil
                         </a>
                     </li>
@@ -168,17 +203,17 @@ $flashMessages = getFlashMessages();
                 
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
                             <i class="bi bi-person-circle me-1"></i>
                             <?= escape($user['fullname']) ?>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><h6 class="dropdown-header">
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><h6 class="dropdown-header" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 12px;">
                                 <i class="bi bi-shield-check me-1"></i>
                                 <?= ucfirst($user['role']) ?>
                             </h6></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">
+                            <li><a class="dropdown-item" href="logout.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
                                 <i class="bi bi-box-arrow-right me-1"></i>Logout
                             </a></li>
                         </ul>
@@ -225,14 +260,14 @@ $flashMessages = getFlashMessages();
         <!-- Create/Edit Project Form -->
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="bi bi-<?= $action == 'create' ? 'plus-circle' : 'pencil-square' ?> me-2"></i>
+                <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <div class="card-header" style="background: white; border-radius: 12px 12px 0 0; padding: 20px; border-bottom: 1px solid #E2E8F0;">
+                        <h5 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B; font-size: 16px;">
+                            <i class="bi bi-<?= $action == 'create' ? 'plus-circle' : 'pencil-square' ?> me-2" style="color: #3B82F6;"></i>
                             <?= $action == 'create' ? 'Tambah Proyek Baru' : 'Edit Proyek' ?>
                         </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 20px;">
                         <form method="POST" action="">
                             <input type="hidden" name="csrf_token" value="<?= generateCSRFToken() ?>">
                             

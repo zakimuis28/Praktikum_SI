@@ -15,9 +15,9 @@ if (!isLoggedIn()) {
 $user = getCurrentUser();
 $userRole = $user['role'];
 
-// Admin tidak bisa evaluasi
-if (hasRole('admin')) {
-    setFlashMessage('info', 'Administrator tidak dapat melakukan evaluasi. Silakan login sebagai evaluator.');
+// Supervisor tidak bisa evaluasi
+if (hasRole('supervisor')) {
+    setFlashMessage('info', 'Supervisor tidak dapat melakukan evaluasi. Silakan login sebagai evaluator.');
     redirect('dashboard.php');
 }
 
@@ -105,98 +105,111 @@ $flashMessages = getFlashMessages();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link href="assets/css/style.css" rel="stylesheet">
     
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8FAFC;
+        }
         .criteria-card {
             transition: all 0.3s ease;
-            border-left: 5px solid var(--primary-teal);
+            border-left: 5px solid #3B82F6;
             background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             margin-bottom: 1.5rem;
+            border: 1px solid #E2E8F0;
         }
         .criteria-card:hover {
-            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
         }
         .criteria-title {
-            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.75rem;
+            color: #1E293B;
+            margin-bottom: 8px;
             line-height: 1.4;
         }
         .criteria-description {
-            font-size: 0.95rem;
-            color: #64748b;
-            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 12px;
             line-height: 1.5;
         }
         .criteria-weight {
-            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
             font-weight: 600;
-            background: linear-gradient(135deg, #06b6d4, #f59e0b);
+            background: #3B82F6;
             color: white;
-            padding: 0.35rem 0.8rem;
+            padding: 4px 12px;
             border-radius: 20px;
         }
         .score-section {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 1.25rem;
-            margin-top: 1rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
         }
         .score-input {
-            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
             font-weight: 700;
             text-align: center;
-            border: 3px solid #e2e8f0;
-            border-radius: 12px;
-            height: 60px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            height: 56px;
             width: 100%;
             transition: all 0.3s ease;
         }
         .score-input:focus {
-            border-color: var(--primary-teal);
-            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
-            transform: scale(1.05);
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+            outline: none;
         }
         .score-range {
-            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
-            height: 8px;
-            border-radius: 4px;
-            margin: 15px 0;
+            background: linear-gradient(90deg, #EF4444 0%, #F59E0B 50%, #22C55E 100%);
+            height: 6px;
+            border-radius: 3px;
+            margin: 12px 0;
         }
         .score-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            color: #64748b;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            color: #64748B;
             font-weight: 500;
         }
         .evaluation-progress {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            border: 1px solid #E2E8F0;
         }
         .criteria-number {
-            background: linear-gradient(135deg, #06b6d4, #f59e0b);
+            background: #3B82F6;
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 14px;
+            margin-bottom: 12px;
         }
         .criteria-container {
             max-width: 800px;
@@ -206,11 +219,11 @@ $flashMessages = getFlashMessages();
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #06b6d4, #f59e0b);">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">
-                <i class="bi bi-diagram-3 me-2"></i>
-                GDSS
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <img src="assets/images/logo.svg" alt="GDSS Logo" width="32" height="32" class="me-2">
+                <span style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #3B82F6;">GDSS</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -219,23 +232,41 @@ $flashMessages = getFlashMessages();
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">
-                            <i class="bi bi-house me-1"></i>Dashboard
+                    <!-- Management Section (Supervisor & General) -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Management
                         </a>
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><a class="dropdown-item" href="dashboard.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-house me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="projects.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-folder me-2"></i>Kelola Proyek
+                            </a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="projects.php">
-                            <i class="bi bi-folder me-1"></i>Proyek
+                    
+                    <!-- Evaluation Section (Non-Supervisor Only) -->
+                    <?php if (!hasRole('supervisor')): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; background: #3B82F6; color: white; border-radius: 6px; font-weight: 600; padding: 8px 12px;">
+                            <i class="bi bi-clipboard-data me-1"></i>Evaluasi
                         </a>
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><a class="dropdown-item active" href="evaluate.php" style="font-family: 'Poppins', sans-serif; color: #3B82F6; font-size: 14px; font-weight: 600;">
+                                <i class="bi bi-clipboard-check me-2"></i>Evaluasi BORDA
+                            </a></li>
+                            <li><a class="dropdown-item" href="ahp_comparison.php?step=criteria" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                <i class="bi bi-diagram-2 me-2"></i>Evaluasi AHP
+                            </a></li>
+                        </ul>
                     </li>
+                    <?php endif; ?>
+                    
+                    <!-- Results Section -->
                     <li class="nav-item">
-                        <a class="nav-link active" href="evaluate.php">
-                            <i class="bi bi-clipboard-check me-1"></i>Evaluasi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="results.php">
+                        <a class="nav-link" href="results.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
                             <i class="bi bi-trophy me-1"></i>Hasil
                         </a>
                     </li>
@@ -243,17 +274,17 @@ $flashMessages = getFlashMessages();
                 
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
                             <i class="bi bi-person-circle me-1"></i>
                             <?= escape($user['fullname']) ?>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><h6 class="dropdown-header">
+                        <ul class="dropdown-menu" style="border: 1px solid #E2E8F0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <li><h6 class="dropdown-header" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 12px;">
                                 <i class="bi bi-shield-check me-1"></i>
                                 <?= ucfirst($user['role']) ?>
                             </h6></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.php">
+                            <li><a class="dropdown-item" href="logout.php" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
                                 <i class="bi bi-box-arrow-right me-1"></i>Logout
                             </a></li>
                         </ul>
@@ -296,22 +327,22 @@ $flashMessages = getFlashMessages();
         <?php endif; ?>
 
         <!-- Evaluation Progress -->
-        <div class="evaluation-progress animate-fadeIn">
+        <div class="evaluation-progress">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h4 class="mb-2">
-                        <i class="bi bi-clipboard-check me-2 text-primary"></i>
+                    <h4 class="mb-2" style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1E293B; font-size: 20px;">
+                        <i class="bi bi-clipboard-check me-2" style="color: #3B82F6;"></i>
                         Evaluasi Proyek - Bidang <?= ucfirst($userRole) ?>
                     </h4>
-                    <p class="text-muted mb-0">
-                        Progress evaluasi Anda: <strong><?= $evaluationProgress['completed'] ?></strong> 
-                        dari <strong><?= $evaluationProgress['total'] ?></strong> proyek 
-                        (<strong><?= $evaluationProgress['percentage'] ?>%</strong> selesai)
+                    <p class="mb-0" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                        Progress evaluasi Anda: <strong style="color: #1E293B;"><?= $evaluationProgress['completed'] ?></strong> 
+                        dari <strong style="color: #1E293B;"><?= $evaluationProgress['total'] ?></strong> proyek 
+                        (<strong style="color: #3B82F6;"><?= $evaluationProgress['percentage'] ?>%</strong> selesai)
                     </p>
                 </div>
                 <div class="col-md-4 text-end">
-                    <div class="progress" style="height: 12px;">
-                        <div class="progress-bar" style="width: <?= $evaluationProgress['percentage'] ?>%"></div>
+                    <div class="progress" style="height: 8px; background: #F1F5F9; border-radius: 4px;">
+                        <div class="progress-bar" style="width: <?= $evaluationProgress['percentage'] ?>%; background: #3B82F6; border-radius: 4px;"></div>
                     </div>
                 </div>
             </div>
@@ -321,14 +352,14 @@ $flashMessages = getFlashMessages();
         <!-- Project Selection -->
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="bi bi-list-check me-2"></i>
+                <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <div class="card-header" style="background: white; border-radius: 12px 12px 0 0; padding: 20px; border-bottom: 1px solid #E2E8F0;">
+                        <h5 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B; font-size: 16px;">
+                            <i class="bi bi-list-check me-2" style="color: #3B82F6;"></i>
                             Pilih Proyek untuk Dievaluasi
                         </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 20px;">
                         <?php if (!empty($projects)): ?>
                             <div class="row g-3">
                                 <?php foreach ($projects as $project): ?>
@@ -368,7 +399,7 @@ $flashMessages = getFlashMessages();
                             <div class="text-center py-5">
                                 <i class="bi bi-inbox fs-1 text-muted"></i>
                                 <h5 class="text-muted mt-3">Belum ada proyek tersedia</h5>
-                                <p class="text-muted">Silakan hubungi administrator untuk menambahkan proyek</p>
+                                <p class="text-muted">Silakan hubungi supervisor untuk menambahkan proyek</p>
                             </div>
                         <?php endif; ?>
                     </div>

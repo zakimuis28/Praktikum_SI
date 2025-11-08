@@ -1,292 +1,270 @@
-# GDSS - Group Decision Support System
+# 🏢 GDSS - Group Decision Support System
 
-Website sistem pendukung keputusan kelompok untuk menentukan prioritas proyek IT menggunakan metode **Weighted Product (WP)** dan agregasi **BORDA** berdasarkan penelitian terakreditasi SINTA.
+> **Sistem Pendukung Keputusan Kelompok untuk Prioritas Proyek IT**  
+> Menggunakan metode **Analytic Hierarchy Process (AHP)** + **BORDA** Aggregation
 
-## 📚 Referensi Ilmiah
+[![PHP Version](https://img.shields.io/badge/PHP-8.0+-blue.svg)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-5.7+-orange.svg)](https://mysql.com)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple.svg)](https://getbootstrap.com)
 
-**Artikel Referensi:**
-> Cahyana, N. H., & Aribowo, A. S. (2014). *Group Decision Support System (GDSS) untuk Menentukan Prioritas Proyek*. **Jurnal Teknik Informatika dan Sistem Informasi**, 1(2), 45-58.
+## 📋 Deskripsi Project
 
-**Status Akreditasi:** SINTA (Sistem Informasi Nasional Penelitian dan Pengabdian Masyarakat)
+GDSS adalah implementasi sistem pendukung keputusan kelompok yang memfasilitasi pengambilan keputusan bersama antara **3 decision maker** (Tim Teknis, Administrasi, dan Keuangan) dalam menentukan prioritas proyek IT menggunakan metode **AHP** untuk evaluasi individual dan **BORDA** untuk konsensus akhir.
 
-**Metodologi yang Diadopsi:**
-- Metode Weighted Product (WP) untuk evaluasi multi-kriteria per bidang
-- Metode BORDA untuk agregasi consensus decision making
-- Framework Group Decision Support System (GDSS)
+## 🎯 Fitur Utama
 
-## 🎯 Deskripsi Proyek
+### ✅ **Metode AHP (Analytic Hierarchy Process)**
+- **Perbandingan Berpasangan**: Skala Saaty 1-9 dengan UI intuitif dan step-by-step navigation
+- **Validasi Konsistensi**: CR ≤ 0.1, warning otomatis dengan guidance untuk perbaikan
+- **Priority Vector**: Eigenvalue method untuk perhitungan bobot yang akurat
+- **Global Scoring**: Agregasi kriteria × alternatif untuk ranking individual per bidang
+- **Real-time Results**: Visualisasi hasil dengan Chart.js dan progress indicators
 
-GDSS adalah implementasi sistem pendukung keputusan kelompok yang memfasilitasi pengambilan keputusan bersama antara tiga decision maker: **Tim Teknis, Tim Administrasi, dan Tim Keuangan** dalam menentukan prioritas proyek IT berdasarkan kriteria yang telah ditetapkan dalam penelitian referensi.
+### ✅ **Multi-Decision Maker System**
+- **3 Role Evaluator**: Teknis (5 kriteria), Administrasi (4 kriteria), Keuangan (3 kriteria)
+- **Role-based Access Control**: Navbar dan fitur disesuaikan dengan peran pengguna
+- **Systematic Navigation**: Dropdown grouping - Management, Evaluasi, Hasil
+- **Individual Evaluation**: Setiap DM melakukan AHP secara independen dengan validation
+- **Supervisor Dashboard**: Kelola proyek, monitor progress, dan finalisasi konsensus
 
-## ⚙️ Spesifikasi Teknis
+### ✅ **BORDA Consensus Method**  
+- **Weighted Aggregation**: Teknis (53.8%), Administrasi (30.8%), Keuangan (15.4%)
+- **Final Ranking**: Konsensus berdasarkan agregasi hasil AHP dari semua bidang
+- **Transparency**: Dashboard menampilkan kontribusi dan breakdown per bidang
+- **Finalization Control**: Supervisor dapat memfinalisasi konsensus dengan tracking status
 
-- **Backend:** PHP 8+ dengan PDO MySQL
-- **Frontend:** HTML5, CSS3, Bootstrap 5 (CDN)
-- **Database:** MySQL/MariaDB
-- **Server:** PHP Built-in Server atau Apache/Nginx
-- **Tools:** VSCode, Git, Laragon/XAMPP
+## 🛠 Tech Stack
 
-## 📋 Fitur Sesuai Requirements UAS
-
-### ✅ **1. Referensi Jurnal Terakreditasi SINTA**
-- Berdasarkan artikel Cahyana & Aribowo (2014)
-- Mengadopsi metodologi WP + BORDA yang terbukti efektif
-- Data proyek dan kriteria sesuai dengan case study artikel
-
-### ✅ **2. Minimal 3 Decision Maker**
-- **Tim Teknis:** Evaluasi aspek teknis (5 kriteria)
-- **Tim Administrasi:** Evaluasi aspek administrasi (4 kriteria)  
-- **Tim Keuangan:** Evaluasi aspek keuangan (3 kriteria)
-- **Administrator:** Mengelola sistem dan proyek
-
-### ✅ **3. Website dengan 3 Akun Decision Maker**
-- Interface web responsive dengan Bootstrap 5
-- Role-based access control untuk setiap decision maker
-- Session management dengan CSRF protection
-
-### ✅ **4. Penilaian Individual + Konsensus BORDA**
-- Setiap decision maker melakukan evaluasi secara independen
-- Metode Weighted Product untuk ranking per bidang
-- Agregasi final menggunakan metode BORDA tertimbang
-- **Konsensus difinalisasi oleh decision maker dengan jabatan tertinggi (Administrator)**
-
-### ✅ **5. Semua Decision Maker Melihat Hasil Konsensus**
-- Dashboard hasil evaluasi untuk semua user
-- Visualisasi ranking final dengan BORDA score
-- Breakdown hasil per bidang evaluasi
-
-## 🛠️ Instalasi
-
-### Persyaratan Sistem
-- PHP 8.0+
-- MySQL 5.7+ atau MariaDB 10.3+
-- Web browser modern
-- Laragon/XAMPP/WAMP
-
-### Langkah Instalasi
-
-1. **Setup Environment**
-   ```bash
-   # Clone atau extract project
-   cd d:\laragon\www\
-   git clone <repository-url> gdss-web
-   cd gdss-web
-   ```
-
-2. **Setup Database**
-   ```sql
-   -- Buat database di MySQL
-   CREATE DATABASE gdss_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   
-   -- Import script database original
-   mysql -u root -p gdss_db < install_gdss.sql
-   
-   -- Update ke data artikel referensi
-   mysql -u root -p gdss_db < update_to_article_reference.sql
-   ```
-
-3. **Konfigurasi Database**
-   Edit file `config.php`:
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_NAME', 'gdss_db');
-   define('DB_USER', 'root');
-   define('DB_PASS', ''); // Password MySQL Anda
-   ```
-
-4. **Jalankan Server**
-   ```bash
-   # Menggunakan PHP Built-in Server
-   php -S localhost:8000
-   
-   # Atau akses via Laragon
-   http://gdss-web.test
-   ```
-
-5. **Testing Setup**
-   - Akses: `http://localhost:8000/test.php`
-   - Pastikan semua checklist ✅
-   - Login dengan akun demo
-
-## 👥 Akun Demo (Sesuai Artikel)
-
-| Role | Username | Password | Deskripsi |
-|------|----------|----------|-----------|
-| **Administrator** | `admin` | `admin123` | Kelola proyek, finalisasi konsensus |
-| **Tim Teknis** | `teknis` | `teknis123` | Evaluasi 5 kriteria teknis |
-| **Tim Administrasi** | `administrasi` | `admin123` | Evaluasi 4 kriteria administrasi |
-| **Tim Keuangan** | `keuangan` | `keuangan123` | Evaluasi 3 kriteria keuangan |
-
-## 📊 Data Sesuai Artikel Referensi
-
-### **Proyek yang Dievaluasi (ID 1201-1205):**
-1. **ID1201** - SIPPK Kementerian Kesehatan RI
-2. **ID1202** - SMS Gateway PPK Kemenkes RI  
-3. **ID1203** - Sistem Data Center/Warehouse
-4. **ID1204** - Sistem Informasi Akademik STIE
-5. **ID1205** - Network Monitoring System
-
-### **Kriteria Evaluasi:**
-
-**🔧 Teknis (5 kriteria, bobot 53.8%):**
-- Kemampuan Teknis (Bobot: 5 - Benefit)
-- Ketersediaan SDM (Bobot: 5 - Benefit)
-- Sumber Daya Pendukung (Bobot: 4 - Benefit)
-- Kelayakan Penjadwalan (Bobot: 5 - Benefit)
-- Tingkat Kesulitan (Bobot: 5 - Cost)
-
-**📋 Administrasi (4 kriteria, bobot 30.8%):**
-- Administrasi (Bobot: 3 - Cost)
-- Transportasi (Bobot: 3 - Cost)
-- Akomodasi (Bobot: 3 - Cost)
-- Perijinan (Bobot: 5 - Cost)
-
-**💰 Keuangan (3 kriteria, bobot 15.4%):**
-- Nilai Proyek (Bobot: 5 - Benefit)
-- Fee SDM (Bobot: 4 - Cost)
-- Biaya Operasional (Bobot: 4 - Cost)
-
-## 🧮 Metodologi Perhitungan
-
-### 1. **Weighted Product (WP) per Bidang**
-
-**Formula:**
-```
-V_i = ∏ (x_ij ^ w_j)
-```
-
-**Normalisasi:**
-- **Benefit:** x_ij = nilai / max_nilai
-- **Cost:** x_ij = min_nilai / nilai
-
-### 2. **Metode BORDA untuk Agregasi**
-
-**Formula:**
-```
-S_i = Σ (n - r_ij + 1) × w_j
-```
-
-**Bobot Bidang (sesuai artikel):**
-- Teknis: 7/13 = 53.8%
-- Administrasi: 4/13 = 30.8%  
-- Keuangan: 2/13 = 15.4%
-
-### 3. **Finalisasi Konsensus**
-- Administrator sebagai decision maker dengan jabatan tertinggi
-- Memiliki wewenang untuk memfinalisasi hasil konsensus
-- Semua decision maker dapat melihat hasil final
+- **Backend**: PHP 8+ dengan PDO MySQL
+- **Frontend**: HTML5, CSS3, Bootstrap 5, Chart.js
+- **Database**: MySQL/MariaDB
+- **Server**: Apache/Nginx atau PHP Built-in Server
 
 ## 📁 Struktur Project
 
 ```
 gdss-web/
-├── index.php                    # Halaman login dengan demo accounts
-├── dashboard.php                # Dashboard utama dengan statistik
-├── projects.php                 # Manajemen proyek (CRUD) - Admin only
-├── evaluate.php                 # Form evaluasi individual per bidang
-├── results.php                  # Hasil WP + BORDA + Finalisasi
-├── logout.php                   # Logout handler
-├── config.php                   # Konfigurasi database & session
-├── functions.php                # Fungsi utama WP + BORDA
-├── install_gdss.sql             # Script setup database original
-├── update_to_article_reference.sql # Update ke data artikel
-├── test.php                     # System diagnostic tool
-├── assets/
-│   ├── css/style.css           # Modern CSS dengan animasi
-│   └── images/                 # Assets (kosong)
-├── README.md                   # Dokumentasi lengkap
-└── TROUBLESHOOTING.md          # Panduan troubleshooting
+├── 📄 Core Files
+│   ├── index.php              # Login page
+│   ├── dashboard.php          # Main dashboard
+│   ├── config.php             # Database configuration
+│   └── functions.php          # Core functions
+│
+├── 🧮 AHP Implementation
+│   ├── ahp_comparison.php     # Pairwise comparison forms with step navigation
+│   └── ahp_results.php        # Individual AHP results & consistency validation
+│
+├── 📊 Evaluation & Results  
+│   ├── evaluate.php           # BORDA method evaluation (alternative method)
+│   ├── results.php            # Final consensus results with BORDA aggregation
+│   └── projects.php           # Project management (supervisor only)
+│
+├── 📂 Organized Folders
+│   ├── assets/                # CSS, images, static files
+│   ├── sql/                   # Database scripts
+│   ├── docs/                  # Documentation
+│   ├── tests/                 # Test files
+│   └── uploads/               # File uploads
+│
+└── 🔧 Configuration
+    ├── .gitignore             # Git ignore rules
+    └── logout.php             # Session cleanup
 ```
 
-## 🎨 Design System
+## 🚀 Quick Start
 
-### Color Palette (Professional Academic)
-- **Primary Teal:** `#06b6d4` (Kepercayaan, Teknologi)
-- **Primary Amber:** `#f59e0b` (Optimisme, Inovasi)  
-- **Dark Navy:** `#0f172a` (Profesional, Stabil)
-- **Success Green:** `#10b981` (Berhasil, Positif)
-
-### UI/UX Features
-- Responsive design dengan Bootstrap 5
-- Modern glassmorphism effects
-- Smooth animations dan transitions
-- Dark mode ready CSS variables
-
-## 🚀 Workflow Penggunaan
-
-### **Untuk Administrator:**
-1. Login → Dashboard overview
-2. Kelola proyek via menu "Proyek" 
-3. Monitor progress evaluasi
-4. **Finalisasi konsensus** hasil BORDA
-5. Export dan print laporan
-
-### **Untuk Decision Maker (Teknis/Admin/Keuangan):**
-1. Login sesuai role → Dashboard personal
-2. Menu "Evaluasi" → Pilih proyek
-3. Berikan skor 1-10 untuk setiap kriteria
-4. Simpan evaluasi → Lanjut proyek berikutnya
-5. Lihat hasil per bidang dan final ranking
-
-## 📈 Validasi Penelitian
-
-**Konsistensi dengan Artikel:**
-- ✅ Menggunakan metode WP + BORDA sesuai referensi
-- ✅ Data proyek dan kriteria identik dengan case study
-- ✅ Bobot kriteria dan bidang sesuai perhitungan artikel
-- ✅ Framework GDSS dengan 3+ decision maker
-- ✅ Individual assessment + group consensus
-
-**Value Added:**
-- Interface web modern dan user-friendly
-- Real-time calculation dan visualization
-- Session management dan security features
-- Responsive design untuk berbagai device
-
-## 🔧 Customization
-
-### Menambah Decision Maker Baru:
+### 1. **Setup Database**
 ```sql
--- Tambah role baru
-ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'teknis', 'administrasi', 'keuangan', 'role_baru');
+-- Import database schema
+mysql -u root -p < sql/install_gdss.sql
 
--- Insert user baru
-INSERT INTO users (username, password, fullname, role) 
-VALUES ('username_baru', 'password123', 'Nama Lengkap', 'role_baru');
+-- Run AHP schema update
+mysql -u root -p gdss_db < sql/update_ahp_schema.sql
+
+-- Clean up database (optional)
+mysql -u root -p gdss_db < sql/simple_cleanup.sql
 ```
 
-### Menambah Kriteria Evaluasi:
-```sql
-INSERT INTO criteria (part, name, weight, type, description) 
-VALUES ('teknis', 'Kriteria Baru', 0.100, 'benefit', 'Deskripsi kriteria');
-
--- Update bobot kriteria lain agar total = 1.0
+### 2. **Configure Application**
+```php
+// Edit config.php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'gdss_db');  
+define('DB_USER', 'root');
+define('DB_PASS', 'your_password');
 ```
 
-## 🐛 Troubleshooting
+### 3. **Start Application**
+```bash
+# Using PHP Built-in Server
+php -S localhost:8000
 
-**Masalah Umum:**
-- Database connection error → Cek `config.php`
-- Login gagal → Gunakan akun demo yang benar
-- Error perhitungan → Pastikan semua kriteria sudah dievaluasi
+# Or use Apache/Nginx
+# Access: http://localhost/gdss-web/
+```
 
-**Development Mode:**
-- Akses `test.php` untuk diagnostic lengkap
-- Check error logs di browser console
-- Aktifkan debug mode di `config.php`
+### 4. **Login with Demo Accounts**
+| Username | Password | Role | Navbar Access | Evaluation Scope |
+|----------|----------|------|---------------|-------------------|
+| `supervisor` | `admin123` | Supervisor | Management + Hasil | Project management, finalize consensus |
+| `teknis01` | `teknis123` | Teknis | Management + Evaluasi + Hasil | Technical AHP evaluation (5 criteria) |
+| `administrasi` | `admin123` | Administrasi | Management + Evaluasi + Hasil | Administrative AHP evaluation (4 criteria) |
+| `keuangan01` | `keuangan123` | Keuangan | Management + Evaluasi + Hasil | Financial AHP evaluation (3 criteria) |
 
-## 📄 Lisensi & Credit
+## 🔄 AHP Evaluation Workflow
 
-**Academic Use License**  
-Project ini dibuat untuk keperluan UAS dan penelitian akademik.
+```mermaid
+graph TD
+    A[Login as Evaluator] --> B[Navbar: Evaluasi Dropdown]
+    B --> C[Evaluasi AHP - Step 1: Criteria Comparison]
+    C --> D[Consistency Check CR ≤ 0.1]
+    D --> E{Consistent?}
+    E -->|No| F[Warning + Guidance for Fixes]
+    F --> C
+    E -->|Yes| G[Step 2: Alternatives Comparison per Criteria]
+    G --> H[Individual AHP Results with Visualizations]
+    I --> J[Supervisor: BORDA Aggregation & Finalization]
+    I --> J[Final Consensus Ranking in Hasil Section]
+```
 
-**Based on Research:**  
-Cahyana, N. H., & Aribowo, A. S. (2014). Group Decision Support System (GDSS) untuk Menentukan Prioritas Proyek.
+## 🧪 Testing & Debugging
 
-**Implementation:**  
-PHP & MySQL Implementation of GDSS with WP + BORDA Methods
+```bash
+# Test database connection & setup
+http://localhost:8000/tests/test.php
+
+# Test AHP mathematical functions
+http://localhost:8000/tests/test_ahp.php
+
+# Check all system components
+# All tests should show ✅ green checkmarks
+```
+
+## 📊 AHP Mathematical Implementation
+
+### **1. Pairwise Comparison Matrix Construction**
+```php
+// Build matrix from Saaty 1-9 scale user inputs
+$matrix = buildPairwiseMatrix($comparisons, $elementIds);
+// Auto-populate reciprocal values (aij = 1/aji)
+```
+
+### **2. Priority Vector Calculation (Eigenvalue Method)**
+```php  
+// Eigenvalue method for precise weight calculation
+$priorities = calculatePriorityVector($matrix);
+// Normalized eigenvector of maximum eigenvalue
+```
+
+### **3. Consistency Validation with User Guidance**
+```php
+$consistency = calculateConsistency($matrix, $priorities);
+// CI = (λmax - n) / (n - 1)
+// CR = CI / RI (Random Index)
+// CR ≤ 0.1 = Consistent ✅, CR > 0.1 = Needs revision ⚠️
+if (!$consistency['is_consistent']) {
+    // Show warning with specific guidance for improvement
+}
+```
+
+### **4. Global Score Calculation & Individual Results**
+```php
+// Multi-level hierarchy: Criteria weights × Alternative scores
+$globalScores = calculateAHPGlobalScores($criteriaPriorities, $alternativePriorities);
+// Individual ranking per evaluator before BORDA aggregation
+```
+
+### **5. Real-time Visualization & Feedback**
+```javascript
+// Chart.js doughnut charts for criteria weights
+// Progress indicators for evaluation completion
+// Interactive consistency warnings with actionable advice
+```
+
+## 🏆 BORDA Aggregation Formula
+
+```php
+Final_Score = (7/13 × Teknis_AHP) + (4/13 × Administrasi_AHP) + (2/13 × Keuangan_AHP)
+```
+
+**Weight Rationale:**
+- **Teknis (7/13)**: Highest weight - technical feasibility crucial for IT projects
+- **Administrasi (4/13)**: Medium weight - process & compliance considerations  
+- **Keuangan (2/13)**: Lower weight - budget constraint but not primary factor
+
+## 🎨 User Interface Highlights
+
+- **🎨 Modern Bootstrap 5 Design**: Responsive interface with Poppins typography
+- **📊 Interactive Visualizations**: Chart.js doughnut charts for criteria priorities
+- **🔄 Systematic Navigation**: Logical navbar grouping (Management/Evaluasi/Hasil)
+- **⚠️ Real-time Validation**: Consistency warnings with actionable guidance
+- **🏆 Comprehensive Results**: Multi-tab dashboard with methodology explanation
+- **📱 Role-based Interface**: Dynamic navbar based on user permissions
+- **✨ Visual Feedback**: Progress bars, badges, and status indicators throughout
+
+## 🧭 Navigation System
+
+### **Systematic Navbar Structure**
+```php
+// Management Dropdown (All Users)
+├── Dashboard - System overview and statistics
+└── Kelola Proyek - Project management (supervisor only)
+
+// Evaluasi Dropdown (Evaluators Only)  
+├── Evaluasi BORDA - Alternative ranking method
+└── Evaluasi AHP - Primary AHP evaluation workflow
+
+// Hasil Section (All Users)
+└── Hasil - Final consensus results and rankings
+```
+
+### **Role-based Access Control**
+- **Supervisor**: Management + Hasil (no individual evaluation access)
+- **Evaluators**: Management + Evaluasi + Hasil (full evaluation workflow)
+- **Dynamic UI**: Navbar adapts automatically based on user role and permissions
+
+## 🔒 Security Features
+
+- **CSRF Protection**: All forms protected against cross-site request forgery
+- **Session Management**: Secure session handling with proper cleanup
+- **Role-based Access**: Strict access control per user role with redirect protection
+- **Input Validation**: Server-side validation for all user inputs and AHP matrices
+- **SQL Injection Protection**: PDO prepared statements throughout
+- **Consistency Validation**: Mathematical validation prevents invalid AHP matrices
+
+## 📈 Recent Updates & Improvements
+
+### ✅ **Completed (v2.0)**
+- **Consistent Navbar Structure**: Systematic Management/Evaluasi/Hasil grouping across all pages
+- **Enhanced AHP Terminology**: Accurate methodology descriptions throughout the system
+- **Role-based Navigation**: Dynamic navbar based on user permissions (supervisor vs evaluators)
+- **Improved Results Dashboard**: Multi-tab interface with comprehensive methodology explanation
+- **Visual Consistency**: Uniform icons, styling, and user experience patterns
+
+### 🚀 **Future Enhancements**
+- [ ] **Export Functionality**: PDF reports for decision documentation
+- [ ] **Sensitivity Analysis**: What-if scenarios for weight changes  
+- [ ] **Multi-language Support**: Indonesian + English interface
+- [ ] **Email Notifications**: Alert DMs for pending evaluations
+- [ ] **Audit Trail**: Complete decision-making process logging
+- [ ] **REST API**: Integration with external project management systems
+- [ ] **Mobile App**: Native mobile application for on-the-go evaluations
+
+## 🤝 Contributing
+
+This is an academic project implementing research-based decision support methodology. Contributions welcome for:
+
+- Algorithm optimizations
+- UI/UX improvements  
+- Additional mathematical methods
+- Performance enhancements
+- Security improvements
+
+## 📄 License
+
+Academic project - Educational use only. Based on research methodology from peer-reviewed publications.
 
 ---
 
-**© 2024 GDSS Implementation**  
-*Faithful implementation of SINTA-accredited research for academic purposes*
+**🎓 Academic Implementation of Group Decision Support System using AHP + BORDA methodology**  
+*Faithful implementation for educational and research purposes*

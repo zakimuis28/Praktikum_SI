@@ -15,8 +15,8 @@ if (!isLoggedIn()) {
 $user = getCurrentUser();
 $userRole = $user['role'];
 
-// Handle finalisasi konsensus (hanya admin)
-if (isset($_GET['finalize']) && $_GET['finalize'] == '1' && hasRole('admin')) {
+// Handle finalisasi konsensus (hanya supervisor)
+if (isset($_GET['finalize']) && $_GET['finalize'] == '1' && hasRole('supervisor')) {
     if (finalizeConsensus()) {
         setFlashMessage('success', 'Konsensus BORDA telah difinalisasi dan disimpan dalam sistem.');
         redirect('results.php');
@@ -61,64 +61,74 @@ $flashMessages = getFlashMessages();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link href="assets/css/style.css" rel="stylesheet">
     
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8FAFC;
+        }
         .result-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
         }
         .result-card:hover {
-            border-color: var(--primary-teal);
-            transform: translateY(-3px);
+            border-color: #3B82F6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .rank-badge {
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-weight: 700;
+            font-weight: 600;
         }
-        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffed4a); color: #000; }
-        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #e2e8f0); color: #000; }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, #f6ad55); color: #fff; }
-        .rank-other { background: var(--secondary-gray); color: #fff; }
+        .rank-1 { background: #FFD700; color: #1E293B; }
+        .rank-2 { background: #C0C0C0; color: #1E293B; }
+        .rank-3 { background: #CD7F32; color: white; }
+        .rank-other { background: #64748B; color: white; }
         
         .finalize-panel {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(16, 185, 129, 0.1));
-            border: 2px solid rgba(245, 158, 11, 0.3);
-            border-radius: 12px;
+            background: rgba(248, 250, 252, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 2rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
         }
         
         .finalized-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: #059669;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.75rem;
         }
         
         .methodology-card {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(245, 158, 11, 0.1));
-            border: 1px solid rgba(6, 182, 212, 0.2);
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #06b6d4, #f59e0b);">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">
-                <i class="bi bi-diagram-3 me-2"></i>
-                GDSS
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <img src="assets/images/logo.svg" alt="GDSS Logo" width="32" height="32" class="me-2">
+                <span style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #3B82F6;">GDSS</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -127,25 +137,49 @@ $flashMessages = getFlashMessages();
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">
-                            <i class="bi bi-house me-1"></i>Dashboard
+                    <!-- Management Section -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
+                            <i class="bi bi-speedometer2 me-1"></i>Management
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="dashboard.php">
+                                    <i class="bi bi-house me-1"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="projects.php">
+                                    <i class="bi bi-folder me-1"></i>Kelola Proyek
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="projects.php">
-                            <i class="bi bi-folder me-1"></i>Proyek
+                    
+                    <!-- Evaluation Section (Non-supervisor only) -->
+                    <?php if (!hasRole('supervisor')): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="font-family: 'Poppins', sans-serif; color: #64748B; font-weight: 500;">
+                            <i class="bi bi-diagram-2 me-1"></i>Evaluasi
                         </a>
-                    </li>
-                    <?php if (!hasRole('admin')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="evaluate.php">
-                            <i class="bi bi-clipboard-check me-1"></i>Evaluasi
-                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="evaluate.php">
+                                    <i class="bi bi-list-ol me-1"></i>Evaluasi BORDA
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="ahp_comparison.php">
+                                    <i class="bi bi-diagram-2 me-1"></i>Evaluasi AHP
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <?php endif; ?>
+                    
+                    <!-- Results Section -->
                     <li class="nav-item">
-                        <a class="nav-link active" href="results.php">
+                        <a class="nav-link active" href="results.php" style="font-family: 'Poppins', sans-serif; color: #3B82F6; font-weight: 500;">
                             <i class="bi bi-trophy me-1"></i>Hasil
                         </a>
                     </li>
@@ -188,12 +222,12 @@ $flashMessages = getFlashMessages();
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <!-- Finalization Panel (Admin Only) -->
-        <?php if (hasRole('admin')): ?>
+        <!-- Finalization Panel (Supervisor Only) -->
+        <?php if (hasRole('supervisor')): ?>
         <div class="finalize-panel">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h5 class="mb-2">
+                    <h5 class="mb-2" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B;">
                         <i class="bi bi-shield-check me-2"></i>
                         Finalisasi Konsensus BORDA
                         <?php if ($isFinalized): ?>
@@ -202,7 +236,7 @@ $flashMessages = getFlashMessages();
                             </span>
                         <?php endif; ?>
                     </h5>
-                    <p class="text-muted mb-0">
+                    <p class="text-muted mb-0" style="font-family: 'Poppins', sans-serif; font-size: 14px;">
                         <?php if ($isFinalized): ?>
                             Konsensus telah difinalisasi. Hasil ini adalah keputusan final dari grup decision maker.
                         <?php else: ?>
@@ -212,11 +246,11 @@ $flashMessages = getFlashMessages();
                 </div>
                 <div class="col-md-4 text-end">
                     <?php if (!$isFinalized && !empty($bordaResults)): ?>
-                        <button class="btn btn-warning btn-lg" onclick="confirmFinalize()">
+                        <button class="btn btn-lg" onclick="confirmFinalize()" style="background: #D97706; color: white; border: none; font-family: 'Poppins', sans-serif; font-weight: 500;">
                             <i class="bi bi-award me-1"></i>Finalisasi Konsensus
                         </button>
                     <?php elseif ($isFinalized): ?>
-                        <button class="btn btn-success btn-lg" disabled>
+                        <button class="btn btn-lg" disabled style="background: #059669; color: white; border: none; font-family: 'Poppins', sans-serif; font-weight: 500;">
                             <i class="bi bi-check-circle me-1"></i>Sudah Difinalisasi
                         </button>
                     <?php endif; ?>
@@ -228,30 +262,30 @@ $flashMessages = getFlashMessages();
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    <div class="card-body" style="padding: 20px;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <h3 class="mb-2">
-                                    <i class="bi bi-trophy me-2 text-warning"></i>
+                                <h3 class="mb-2" style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1E293B; font-size: 24px;">
+                                    <i class="bi bi-trophy me-2" style="color: #3B82F6;"></i>
                                     Hasil Evaluasi Proyek
                                     <?php if ($isFinalized): ?>
-                                        <span class="badge bg-success ms-2">FINAL</span>
+                                        <span class="badge ms-2" style="background: #22C55E; font-family: 'Poppins', sans-serif; font-size: 12px; padding: 4px 8px; border-radius: 4px;">FINAL</span>
                                     <?php endif; ?>
                                 </h3>
-                                <p class="text-muted mb-0">
-                                    Ranking prioritas proyek berdasarkan metode Weighted Product (WP) dan agregasi BORDA
-                                    <br><small><strong>Referensi:</strong> Cahyana, N.H. & Aribowo, A.S. (2014) - GDSS untuk Menentukan Prioritas Proyek</small>
+                                <p class="mb-0" style="font-family: 'Poppins', sans-serif; color: #64748B; font-size: 14px;">
+                                    Ranking prioritas proyek berdasarkan evaluasi AHP per bidang dan agregasi konsensus menggunakan metode BORDA
+                                    <br><small style="color: #94A3B8;"><strong>Referensi:</strong> Cahyana, N.H. & Aribowo, A.S. (2014) - GDSS untuk Menentukan Prioritas Proyek</small>
                                 </p>
                             </div>
                             <div class="col-md-4 text-end">
                                 <div class="btn-group" role="group">
-                                    <?php if (hasRole('admin')): ?>
-                                        <button class="btn btn-outline-primary" onclick="exportResults()">
+                                    <?php if (hasRole('supervisor')): ?>
+                                        <button class="btn" onclick="exportResults()" style="border: 1px solid #3B82F6; color: #3B82F6; font-family: 'Poppins', sans-serif; font-weight: 500; background: white; border-radius: 8px; padding: 8px 16px; font-size: 14px;">
                                             <i class="bi bi-download me-1"></i>Export
                                         </button>
                                     <?php endif; ?>
-                                    <button class="btn btn-outline-info" onclick="printResults()">
+                                    <button class="btn" onclick="printResults()" style="border: 1px solid #64748B; color: #64748B; font-family: 'Poppins', sans-serif; font-weight: 500; background: white; border-radius: 8px; padding: 8px 16px; font-size: 14px; margin-left: 8px;">
                                         <i class="bi bi-printer me-1"></i>Print
                                     </button>
                                 </div>
@@ -263,14 +297,15 @@ $flashMessages = getFlashMessages();
         </div>
 
         <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs mb-4" id="resultTabs" role="tablist">
+        <ul class="nav nav-tabs mb-4" id="resultTabs" role="tablist" style="font-family: 'Poppins', sans-serif;">
             <li class="nav-item" role="presentation">
                 <button class="nav-link <?= $part === 'final' ? 'active' : '' ?>" 
                         id="final-tab" 
                         data-bs-toggle="tab" 
                         data-bs-target="#final" 
                         type="button" 
-                        role="tab">
+                        role="tab"
+                        style="font-weight: 500; color: <?= $part === 'final' ? '#3B82F6' : '#64748B' ?>;">
                     <i class="bi bi-trophy me-1"></i>Ranking Final (BORDA)
                 </button>
             </li>
@@ -280,8 +315,9 @@ $flashMessages = getFlashMessages();
                         data-bs-toggle="tab" 
                         data-bs-target="#teknis" 
                         type="button" 
-                        role="tab">
-                    <i class="bi bi-cpu me-1"></i>Hasil Teknis (WP)
+                        role="tab"
+                        style="font-weight: 500; color: <?= $part === 'teknis' ? '#3B82F6' : '#64748B' ?>;">
+                    <i class="bi bi-cpu me-1"></i>Hasil Teknis (AHP)
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -290,8 +326,9 @@ $flashMessages = getFlashMessages();
                         data-bs-toggle="tab" 
                         data-bs-target="#administrasi" 
                         type="button" 
-                        role="tab">
-                    <i class="bi bi-file-text me-1"></i>Hasil Administrasi (WP)
+                        role="tab"
+                        style="font-weight: 500; color: <?= $part === 'administrasi' ? '#3B82F6' : '#64748B' ?>;">
+                    <i class="bi bi-file-text me-1"></i>Hasil Administrasi (AHP)
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -300,8 +337,9 @@ $flashMessages = getFlashMessages();
                         data-bs-toggle="tab" 
                         data-bs-target="#keuangan" 
                         type="button" 
-                        role="tab">
-                    <i class="bi bi-currency-dollar me-1"></i>Hasil Keuangan (WP)
+                        role="tab"
+                        style="font-weight: 500; color: <?= $part === 'keuangan' ? '#3B82F6' : '#64748B' ?>;">
+                    <i class="bi bi-currency-dollar me-1"></i>Hasil Keuangan (AHP)
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -310,7 +348,8 @@ $flashMessages = getFlashMessages();
                         data-bs-toggle="tab" 
                         data-bs-target="#methodology" 
                         type="button" 
-                        role="tab">
+                        role="tab"
+                        style="font-weight: 500; color: #64748B;">
                     <i class="bi bi-info-circle me-1"></i>Metodologi
                 </button>
             </li>
@@ -322,17 +361,17 @@ $flashMessages = getFlashMessages();
             <div class="tab-pane fade <?= $part === 'final' ? 'show active' : '' ?>" id="final" role="tabpanel">
                 <div class="row mb-4">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-trophy me-2"></i>
+                        <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header" style="background: white; border-radius: 12px 12px 0 0; padding: 20px; border-bottom: 1px solid #E2E8F0;">
+                                <h5 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B; font-size: 16px;">
+                                    <i class="bi bi-trophy me-2" style="color: #3B82F6;"></i>
                                     Ranking Final - Metode BORDA Tertimbang
                                     <?php if ($isFinalized): ?>
-                                        <span class="badge bg-success ms-2">KONSENSUS FINAL</span>
+                                        <span class="badge ms-2" style="background: #22C55E; font-family: 'Poppins', sans-serif; font-size: 11px; padding: 4px 8px; border-radius: 4px;">KONSENSUS FINAL</span>
                                     <?php endif; ?>
                                 </h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="padding: 20px;">
                                 <?php if (!empty($bordaResults)): ?>
                                     <div class="row g-3">
                                         <?php foreach ($bordaResults as $result): ?>
@@ -346,16 +385,16 @@ $flashMessages = getFlashMessages();
                                             }
                                             ?>
                                             <div class="col-md-6 col-lg-4">
-                                                <div class="card result-card h-100">
-                                                    <div class="card-body">
+                                                <div class="card result-card h-100" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                                                    <div class="card-body" style="padding: 16px;">
                                                         <div class="d-flex align-items-start mb-3">
                                                             <div class="rank-badge <?= $rankClass ?> me-3">
                                                                 <?= $result['final_rank'] ?>
                                                             </div>
                                                             <div class="flex-grow-1">
-                                                                <code class="small"><?= escape($result['project_code']) ?></code>
-                                                                <h6 class="fw-bold mt-1"><?= escape($result['project_name']) ?></h6>
-                                                                <small class="text-muted">
+                                                                <code class="small" style="background: #F1F5F9; padding: 2px 6px; border-radius: 4px; font-family: 'Poppins', sans-serif;"><?= escape($result['project_code']) ?></code>
+                                                                <h6 class="fw-bold mt-1" style="font-family: 'Poppins', sans-serif; font-size: 14px; color: #1E293B;"><?= escape($result['project_name']) ?></h6>
+                                                                <small class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 12px;">
                                                                     <i class="bi bi-geo-alt me-1"></i>
                                                                     <?= escape($result['project_location']) ?>
                                                                 </small>
@@ -364,30 +403,30 @@ $flashMessages = getFlashMessages();
                                                         
                                                         <div class="mb-3">
                                                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                                                <small class="fw-semibold">Skor BORDA:</small>
-                                                                <span class="badge bg-primary"><?= formatScore($result['borda_score']) ?></span>
+                                                                <small class="fw-semibold" style="font-family: 'Poppins', sans-serif; font-size: 12px; color: #64748B;">Skor BORDA:</small>
+                                                                <span class="badge" style="background: #3B82F6; font-family: 'Poppins', sans-serif; font-size: 11px;"><?= formatScore($result['borda_score']) ?></span>
                                                             </div>
                                                             <?php 
                                                             $maxScore = max(array_column($bordaResults, 'borda_score'));
                                                             $scorePercentage = $maxScore > 0 ? ($result['borda_score'] / $maxScore) * 100 : 0;
                                                             ?>
-                                                            <div class="progress" style="height: 8px;">
-                                                                <div class="score-bar progress-bar" style="width: <?= $scorePercentage ?>%"></div>
+                                                            <div class="progress" style="height: 6px; background-color: #E5E7EB; border-radius: 3px;">
+                                                                <div class="score-bar progress-bar" style="width: <?= $scorePercentage ?>%; background-color: #3B82F6; border-radius: 3px;"></div>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="row text-center">
                                                             <div class="col-4">
-                                                                <small class="text-muted">Teknis</small>
-                                                                <div class="fw-bold">#<?= $result['teknis_rank'] ?: '-' ?></div>
+                                                                <small class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 11px;">Teknis</small>
+                                                                <div class="fw-bold" style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #1E293B;">#<?= $result['teknis_rank'] ?: '-' ?></div>
                                                             </div>
                                                             <div class="col-4">
-                                                                <small class="text-muted">Admin</small>
-                                                                <div class="fw-bold">#<?= $result['administrasi_rank'] ?: '-' ?></div>
+                                                                <small class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 11px;">Admin</small>
+                                                                <div class="fw-bold" style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #1E293B;">#<?= $result['administrasi_rank'] ?: '-' ?></div>
                                                             </div>
                                                             <div class="col-4">
-                                                                <small class="text-muted">Keuangan</small>
-                                                                <div class="fw-bold">#<?= $result['keuangan_rank'] ?: '-' ?></div>
+                                                                <small class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 11px;">Keuangan</small>
+                                                                <div class="fw-bold" style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #1E293B;">#<?= $result['keuangan_rank'] ?: '-' ?></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -398,9 +437,9 @@ $flashMessages = getFlashMessages();
                                 <?php else: ?>
                                     <div class="text-center py-5">
                                         <i class="bi bi-inbox fs-1 text-muted"></i>
-                                        <h5 class="text-muted mt-3">Belum ada hasil evaluasi</h5>
-                                        <p class="text-muted">Evaluasi belum dilakukan atau belum lengkap dari semua decision maker</p>
-                                        <a href="evaluate.php" class="btn btn-primary">
+                                        <h5 class="text-muted mt-3" style="font-family: 'Poppins', sans-serif; font-weight: 500;">Belum ada hasil evaluasi</h5>
+                                        <p class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 14px;">Evaluasi belum dilakukan atau belum lengkap dari semua decision maker</p>
+                                        <a href="evaluate.php" class="btn" style="background: #3B82F6; color: white; font-family: 'Poppins', sans-serif; font-weight: 500; border: none;">
                                             <i class="bi bi-clipboard-check me-1"></i>Mulai Evaluasi
                                         </a>
                                     </div>
@@ -414,24 +453,24 @@ $flashMessages = getFlashMessages();
                 <?php if (!empty($partWeights)): ?>
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="mb-0">
-                                    <i class="bi bi-pie-chart me-1"></i>
+                        <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header" style="background: white; border-radius: 12px 12px 0 0; padding: 16px; border-bottom: 1px solid #E2E8F0;">
+                                <h6 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B; font-size: 14px;">
+                                    <i class="bi bi-pie-chart me-1" style="color: #3B82F6;"></i>
                                     Bobot Bidang Evaluasi (Sesuai Artikel)
                                 </h6>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="padding: 16px;">
                                 <?php foreach ($partWeights as $weight): ?>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="fw-semibold"><?= ucfirst($weight['part']) ?></span>
-                                        <span class="badge bg-info"><?= formatNumber($weight['weight'] * 100, 1) ?>%</span>
+                                        <span class="fw-semibold" style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #1E293B;"><?= ucfirst($weight['part']) ?></span>
+                                        <span class="badge" style="background: #3B82F6; font-family: 'Poppins', sans-serif; font-size: 11px; padding: 4px 8px; border-radius: 4px;"><?= formatNumber($weight['weight'] * 100, 1) ?>%</span>
                                     </div>
-                                    <div class="progress mb-3" style="height: 6px;">
-                                        <div class="progress-bar" style="width: <?= $weight['weight'] * 100 ?>%"></div>
+                                    <div class="progress mb-3" style="height: 6px; background-color: #F1F5F9; border-radius: 3px;">
+                                        <div class="progress-bar" style="width: <?= $weight['weight'] * 100 ?>%; background-color: #3B82F6; border-radius: 3px;"></div>
                                     </div>
                                 <?php endforeach; ?>
-                                <small class="text-muted">
+                                <small class="text-muted" style="font-family: 'Poppins', sans-serif; font-size: 11px;">
                                     <i class="bi bi-info-circle me-1"></i>
                                     Bobot sesuai artikel Cahyana & Aribowo (2014): Teknis 7/13, Administrasi 4/13, Keuangan 2/13
                                 </small>
@@ -440,25 +479,25 @@ $flashMessages = getFlashMessages();
                     </div>
                     
                     <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="mb-0">
-                                    <i class="bi bi-info-circle me-1"></i>
+                        <div class="card" style="border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                            <div class="card-header" style="background: white; border-radius: 12px 12px 0 0; padding: 16px; border-bottom: 1px solid #E2E8F0;">
+                                <h6 class="mb-0" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #1E293B; font-size: 14px;">
+                                    <i class="bi bi-info-circle me-1" style="color: #3B82F6;"></i>
                                     Interpretasi Hasil
                                 </h6>
                             </div>
-                            <div class="card-body">
-                                <div class="alert alert-success">
-                                    <strong>Prioritas Tinggi (Rank 1-2):</strong><br>
-                                    Proyek yang direkomendasikan untuk dilaksanakan terlebih dahulu
+                            <div class="card-body" style="padding: 16px;">
+                                <div class="alert alert-success" style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 12px;">
+                                    <strong style="font-family: 'Poppins', sans-serif; color: #166534;">Prioritas Tinggi (Rank 1-2):</strong><br>
+                                    <span style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #166534;">Proyek yang direkomendasikan untuk dilaksanakan terlebih dahulu</span>
                                 </div>
-                                <div class="alert alert-warning">
-                                    <strong>Prioritas Sedang (Rank 3-4):</strong><br>
-                                    Proyek yang dapat dipertimbangkan setelah prioritas tinggi
+                                <div class="alert alert-warning" style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px;">
+                                    <strong style="font-family: 'Poppins', sans-serif; color: #92400E;">Prioritas Sedang (Rank 3-4):</strong><br>
+                                    <span style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #92400E;">Proyek yang dapat dipertimbangkan setelah prioritas tinggi</span>
                                 </div>
-                                <div class="alert alert-info">
-                                    <strong>Prioritas Rendah (Rank 5+):</strong><br>
-                                    Proyek yang dapat ditunda atau perlu evaluasi ulang
+                                <div class="alert alert-info" style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px;">
+                                    <strong style="font-family: 'Poppins', sans-serif; color: #1E40AF;">Prioritas Rendah (Rank 5+):</strong><br>
+                                    <span style="font-family: 'Poppins', sans-serif; font-size: 13px; color: #1E40AF;">Proyek yang dapat ditunda atau perlu evaluasi ulang</span>
                                 </div>
                             </div>
                         </div>
@@ -490,21 +529,21 @@ $flashMessages = getFlashMessages();
                             <div class="card-header">
                                 <h5 class="mb-0">
                                     <i class="bi bi-diagram-3 me-2"></i>
-                                    Metodologi GDSS - Weighted Product + BORDA
+                                    Metodologi GDSS - AHP + BORDA
                                 </h5>
                             </div>
                             <div class="card-body">
-                                <h6><i class="bi bi-1-circle me-1"></i>Tahap 1: Evaluasi per Bidang (Weighted Product)</h6>
-                                <p>Setiap bidang (Teknis, Administrasi, Keuangan) mengevaluasi proyek berdasarkan kriteria yang relevan dengan bobot yang berbeda.</p>
+                                <h6><i class="bi bi-1-circle me-1"></i>Tahap 1: Evaluasi per Bidang (Metode AHP)</h6>
+                                <p>Setiap bidang (Teknis, Administrasi, Keuangan) mengevaluasi proyek menggunakan Analytic Hierarchy Process (AHP) berdasarkan perbandingan berpasangan kriteria yang relevan.</p>
                                 
                                 <div class="alert alert-info">
-                                    <strong>Formula WP:</strong><br>
-                                    <code>V<sub>i</sub> = ∏ (x<sub>ij</sub><sup>w<sub>j</sub></sup>)</code><br>
-                                    <small>dimana x<sub>ij</sub> adalah nilai ternormalisasi dan w<sub>j</sub> adalah bobot kriteria</small>
+                                    <strong>Proses AHP:</strong><br>
+                                    <code>1. Pairwise Comparison Matrix → 2. Priority Vector → 3. Consistency Check</code><br>
+                                    <small>Menggunakan eigenvalue method untuk menentukan bobot kriteria dan skor alternatif</small>
                                 </div>
 
                                 <h6 class="mt-4"><i class="bi bi-2-circle me-1"></i>Tahap 2: Agregasi Hasil (Metode BORDA)</h6>
-                                <p>Ranking dari ketiga bidang diagregasi menggunakan metode BORDA dengan bobot bidang yang berbeda.</p>
+                                <p>Ranking hasil AHP dari ketiga bidang diagregasi menggunakan metode BORDA dengan bobot bidang yang berbeda.</p>
                                 
                                 <div class="alert alert-warning">
                                     <strong>Formula BORDA:</strong><br>
@@ -520,7 +559,7 @@ $flashMessages = getFlashMessages();
                                 </ul>
 
                                 <h6 class="mt-4"><i class="bi bi-4-circle me-1"></i>Interpretasi Hasil</h6>
-                                <p>Proyek dengan skor BORDA tertinggi mendapat prioritas utama untuk dilaksanakan, dengan mempertimbangkan aspek teknis, administrasi, dan keuangan secara terintegrasi.</p>
+                                <p>Proyek dengan skor BORDA tertinggi mendapat prioritas utama untuk dilaksanakan, dengan mempertimbangkan hasil evaluasi AHP dari aspek teknis, administrasi, dan keuangan secara terintegrasi.</p>
                             </div>
                         </div>
                     </div>
@@ -612,7 +651,7 @@ $flashMessages = getFlashMessages();
 
 <?php
 /**
- * Function to render WP results for each part
+ * Function to render AHP results for each part
  */
 function renderWPResults($results, $part, $partName, $icon) {
     ob_start();
@@ -621,7 +660,7 @@ function renderWPResults($results, $part, $partName, $icon) {
         <div class="card-header">
             <h5 class="mb-0">
                 <i class="bi bi-<?= $icon ?> me-2"></i>
-                Hasil Evaluasi Bidang <?= $partName ?> (Weighted Product)
+                Hasil Evaluasi Bidang <?= $partName ?> (Metode AHP)
             </h5>
         </div>
         <div class="card-body">
@@ -633,7 +672,7 @@ function renderWPResults($results, $part, $partName, $icon) {
                                 <th>Rank</th>
                                 <th>Kode</th>
                                 <th>Nama Proyek</th>
-                                <th>Nilai WP</th>
+                                <th>Skor AHP</th>
                                 <th>Score Visual</th>
                             </tr>
                         </thead>
@@ -656,8 +695,8 @@ function renderWPResults($results, $part, $partName, $icon) {
                                     </td>
                                     <td>
                                         <?php 
-                                        $maxWP = max(array_column($results, 'wp_value'));
-                                        $percentage = ($maxWP > 0) ? ($result['wp_value'] / $maxWP) * 100 : 0;
+                                        $maxAHP = max(array_column($results, 'wp_value'));
+                                        $percentage = ($maxAHP > 0) ? ($result['wp_value'] / $maxAHP) * 100 : 0;
                                         ?>
                                         <div class="progress" style="height: 20px;">
                                             <div class="progress-bar" 

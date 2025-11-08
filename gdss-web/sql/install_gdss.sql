@@ -18,16 +18,16 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     fullname VARCHAR(100) NOT NULL,
-    role ENUM('admin', 'teknis', 'administrasi', 'keuangan') NOT NULL,
+    role ENUM('supervisor', 'teknis', 'administrasi', 'keuangan') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Data contoh users
 INSERT INTO users (username, password, fullname, role) VALUES
-('admin', 'admin123', 'Administrator System', 'admin'),
-('teknis01', 'teknis123', 'Manager Teknis', 'teknis'),
-('admin01', 'admin123', 'Manager Administrasi', 'administrasi'),
-('keuangan01', 'keuangan123', 'Manager Keuangan', 'keuangan');
+('supervisor', 'supervisor123', 'Supervisor Sistem', 'supervisor'),
+('teknis', 'teknis123', 'Bidang Teknis', 'teknis'),
+('administrasi', 'admin123', 'Bidang Administrasi', 'administrasi'),
+('keuangan', 'keuangan123', 'Bidang Keuangan', 'keuangan');
 
 -- ==================================================
 -- Tabel Projects - Daftar proyek yang akan dinilai
@@ -161,7 +161,7 @@ CREATE INDEX idx_projects_status ON projects(status);
 -- Bisa dijalankan setelah sistem selesai untuk testing
 /*
 INSERT INTO evaluations (project_id, user_id, criteria_id, score) VALUES
--- Evaluasi dari user teknis (id=2) untuk proyek 1
+-- Evaluasi dari user 'teknis' (id=2) untuk proyek 1
 (1, 2, 1, 7.5), -- Kompleksitas Teknis
 (1, 2, 2, 8.0), -- Kesesuaian Teknologi
 (1, 2, 3, 9.0), -- Keamanan Sistem
