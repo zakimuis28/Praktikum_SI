@@ -1,0 +1,165 @@
+# GDSS - Group Decision Support System
+# .gitignore file
+
+# ===================================
+# Operating System Files
+# ===================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+
+# ===================================
+# IDE & Editor Files
+# ===================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PhpStorm / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Notepad++
+*.npp
+
+# ===================================
+# PHP & Composer
+# ===================================
+
+# Composer
+/vendor/
+composer.lock
+composer.phar
+
+# PHP
+*.php~
+*.phps
+*.php.bak
+
+# ===================================
+# Configuration & Sensitive Files
+# ===================================
+
+# Local configuration (don't commit passwords!)
+config/config.local.php
+.env
+.env.local
+.env.production
+
+# ===================================
+# Logs & Temporary Files
+# ===================================
+
+# Log files
+logs/*.log
+logs/*.txt
+*.log
+error.log
+access.log
+
+# Temporary files
+tmp/
+temp/
+cache/
+*.tmp
+*.temp
+*.cache
+
+# ===================================
+# Database
+# ===================================
+
+# Database backups
+*.sql.bak
+*.sql.backup
+database/backups/
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# ===================================
+# Development & Testing
+# ===================================
+
+# Debug files
+debug*.php
+test*.php
+phpunit.xml
+.phpunit.result.cache
+
+# Testing
+tests/_output/*
+tests/_support/_generated
+
+# ===================================
+# Assets & Build Files
+# ===================================
+
+# Node modules (if using npm/yarn)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Compiled assets
+/public/build/
+/public/hot
+/public/storage
+/storage/*.key
+
+# ===================================
+# Version Control
+# ===================================
+
+# Git
+.git/
+.gitattributes
+
+# SVN
+.svn/
+
+# ===================================
+# Other
+# ===================================
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Office temporary files
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+
+# Backup files
+*.bak
+*.old
+*.orig
+*~
+
+# Session files
+sessions/
