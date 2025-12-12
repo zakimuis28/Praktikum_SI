@@ -120,20 +120,20 @@ echo flashBox($flashMessage);
     <?php else: ?>
     <?php foreach ($projects as $project): ?>
     <div class="bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 overflow-hidden hover:border-emerald-500/30 transition-all duration-300">
-        <div class="bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 px-6 py-4 border-b border-gray-200/50">
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-4 border-b border-gray-200/50">
             <div class="flex items-start justify-between">
-                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold uppercase">
+                <span class="px-3 py-1 bg-white text-cyan-600 rounded-full text-xs font-bold uppercase shadow-md">
                     <?= htmlspecialchars($project['project_code']) ?>
                 </span>
                 <div class="flex items-center gap-2">
-                    <button onclick="openEditProjectModal(<?= htmlspecialchars(json_encode($project)) ?>)" class="text-cyan-400 hover:text-cyan-300 transition-colors duration-200">
-                        <?= icon('edit', 'w-5 h-5') ?>
+                    <button onclick="openEditProjectModal(<?= htmlspecialchars(json_encode($project)) ?>)" class="p-2 bg-white/90 text-blue-600 hover:bg-white hover:text-blue-700 rounded-lg transition-all duration-200 shadow-md">
+                        <?= icon('edit', 'w-4 h-4') ?>
                     </button>
                     <form method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus proyek ini?')">
                         <input type="hidden" name="action" value="delete_project">
                         <input type="hidden" name="project_id" value="<?= $project['id'] ?>">
-                        <button type="submit" class="text-red-400 hover:text-red-300 transition-colors duration-200">
-                            <?= icon('delete', 'w-5 h-5') ?>
+                        <button type="submit" class="p-2 bg-white/90 text-red-600 hover:bg-white hover:text-red-700 rounded-lg transition-all duration-200 shadow-md">
+                            <?= icon('delete', 'w-4 h-4') ?>
                         </button>
                     </form>
                 </div>

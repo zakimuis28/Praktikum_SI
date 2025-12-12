@@ -152,10 +152,131 @@ echo flashBox($flashMessage);
     <?= statCard('Rata-rata Skor', round($avgScore), 'results', 'purple') ?>
 </section>
 
+<!-- Detail Progress per Proyek (Supervisor Only) -->
+<?php if ($canExecuteBorda): 
+    // Get decision makers data
+    $db = getConnection();
+    require_once __DIR__ . '/controllers/score_controller.php';
+    $scoreController = new ScoreController();
+    
+    $stmt = $db->prepare("SELECT * FROM users WHERE role IN ('supervisor', 'teknis', 'keuangan') ORDER BY FIELD(role, 'supervisor', 'teknis', 'keuangan'), name");
+    $stmt->execute();
+    $decisionMakers = $stmt->fetchAll();
+    
+    // Build progress data
+    $progressData = [];
+    foreach ($projects as $project) {
+        $progressData[$project['id']] = [
+            'project' => $project,
+            'evaluators' => []
+        ];
+        
+        foreach ($decisionMakers as $dm) {
+            $scores = $scoreController->getUserScores($project['id'], $dm['id']);
+            $hasTopsis = false;
+            
+            // Check if this DM has TOPSIS result for this project
+            if (isset($allTopsisResults[$dm['role']])) {
+                foreach ($allTopsisResults[$dm['role']] as $topsisResult) {
+                    if ($topsisResult['project_id'] == $project['id']) {
+                        $hasTopsis = true;
+                        break;
+                    }
+                }
+            }
+            
+            $progressData[$project['id']]['evaluators'][$dm['id']] = [
+                'user' => $dm,
+                'has_scores' => !empty($scores),
+                'has_topsis' => $hasTopsis
+            ];
+        }
+    }
+?>
+<section class="mb-6">
+    <div class="bg-white rounded-2xl border border-gray-200">
+        <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+            <h5 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <?= icon('criteria', 'w-5 h-5 text-cyan-400') ?>
+                Detail Progress per Proyek
+            </h5>
+        </div>
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="border-b-2 border-gray-300">
+                            <th class="text-left py-3 px-4 text-gray-900 font-bold uppercase tracking-wider text-xs border-r border-gray-200">Proyek</th>
+                            <?php foreach ($decisionMakers as $dm): ?>
+                            <th class="text-center py-3 px-4 text-gray-900 font-bold uppercase tracking-wider text-xs border-r border-gray-200 last:border-r-0">
+                                <div>Decision M</div>
+                                <span class="text-<?= ['supervisor' => 'purple', 'teknis' => 'cyan', 'keuangan' => 'amber'][$dm['role']] ?>-400 uppercase">
+                                    <?= ucfirst($dm['role']) ?>
+                                </span>
+                            </th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($progressData as $projectId => $data): ?>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-4 border-r border-gray-200">
+                                <div>
+                                    <span class="px-2 py-1 bg-cyan-500 text-white rounded text-xs font-bold">
+                                        <?= htmlspecialchars($data['project']['project_code']) ?>
+                                    </span>
+                                    <p class="text-gray-900 font-medium mt-1"><?= htmlspecialchars($data['project']['project_name']) ?></p>
+                                </div>
+                            </td>
+                            <?php foreach ($decisionMakers as $dm): 
+                                $eval = $data['evaluators'][$dm['id']] ?? null;
+                            ?>
+                            <td class="py-4 px-4 text-center border-r border-gray-200 last:border-r-0">
+                                <?php if ($eval && $eval['has_topsis']): ?>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold">
+                                    <?= icon('check', 'w-3 h-3') ?> TOPSIS
+                                </span>
+                                <?php elseif ($eval && $eval['has_scores']): ?>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold">
+                                    <?= icon('clock', 'w-3 h-3') ?> Scored
+                                </span>
+                                <?php else: ?>
+                                <span class="inline-flex items-center gap-1 px-3 py-1 bg-slate-700 text-white rounded-full text-xs font-bold">
+                                    <?= icon('close', 'w-3 h-3') ?> Pending
+                                </span>
+                                <?php endif; ?>
+                            </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Legend -->
+<section class="mb-6 flex flex-wrap gap-4 text-sm">
+    <div class="flex items-center gap-2">
+        <span class="px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold">TOPSIS</span>
+        <span class="text-gray-900">= Evaluasi & TOPSIS selesai</span>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold">Scored</span>
+        <span class="text-gray-900">= Sudah dinilai, belum TOPSIS</span>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="px-3 py-1 bg-slate-700 text-white rounded-full text-xs font-bold">Pending</span>
+        <span class="text-gray-900">= Belum evaluasi</span>
+    </div>
+</section>
+<?php endif; ?>
+
 <!-- Action Button (Hitung BORDA) - HANYA UNTUK SUPERVISOR -->
 <?php if ($canExecuteBorda): ?>
 <section class="mb-6">
-    <div class="bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-6">
+    <div class="bg-white rounded-2xl border border-gray-200 p-6">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
                 <h5 class="text-lg font-bold text-gray-900">Perhitungan Konsensus BORDA</h5>

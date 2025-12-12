@@ -129,7 +129,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 <?php endif; ?>
 
 <!-- Welcome Section -->
-<section class="mb-8 bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-8 hover:border-cyan-500/30 transition-all duration-500">
+<section class="mb-8 bg-white rounded-2xl border border-gray-200 p-8 hover:border-cyan-500 transition-all duration-500">
     <div class="flex flex-col md:flex-row items-center gap-6">
         <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/20">
             <?= icon('bolt', 'w-10 h-10 text-white') ?>
@@ -167,7 +167,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 
 <?php if ($isAdmin): ?>
 <!-- Progress Keseluruhan (Admin Only) -->
-<section class="mb-8 bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-6">
+<section class="mb-8 bg-white rounded-2xl border border-gray-200 p-6">
     <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
         <?= icon('chart', 'w-5 h-5 text-cyan-400') ?>
         Progress Keseluruhan
@@ -185,7 +185,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 </section>
 
 <!-- Progress Table (Admin Only) -->
-<section class="bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 mb-8">
+<section class="bg-white rounded-2xl border border-gray-200 mb-8">
     <div class="flex items-center justify-between border-b border-gray-200/50 px-6 py-4">
         <h5 class="text-lg font-bold text-gray-900 flex items-center gap-2">
             <?= icon('criteria', 'w-5 h-5 text-cyan-400') ?>
@@ -222,11 +222,11 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
                         ?>
                         <td class="py-4 px-4 text-center border-r border-gray-200 last:border-r-0">
                             <?php if ($eval && $eval['has_topsis']): ?>
-                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold">
                                 <?= icon('check', 'w-3 h-3') ?> TOPSIS
                             </span>
                             <?php elseif ($eval && $eval['has_scores']): ?>
-                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-bold">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold">
                                 <?= icon('clock', 'w-3 h-3') ?> Scored
                             </span>
                             <?php else: ?>
@@ -247,11 +247,11 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 <!-- Legend (Admin Only) -->
 <section class="mb-8 flex flex-wrap gap-4 text-sm">
     <div class="flex items-center gap-2">
-        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold">TOPSIS</span>
+        <span class="px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold">TOPSIS</span>
         <span class="text-gray-900">= Evaluasi & TOPSIS selesai</span>
     </div>
     <div class="flex items-center gap-2">
-        <span class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-bold">Scored</span>
+        <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold">Scored</span>
         <span class="text-gray-900">= Sudah dinilai, belum TOPSIS</span>
     </div>
     <div class="flex items-center gap-2">
@@ -265,7 +265,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
     
     <!-- Main Progress Card -->
-    <section class="lg:col-span-2 bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-6 hover:border-cyan-500/30 transition-all duration-500">
+    <section class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 hover:border-cyan-500 transition-all duration-500">
         <div class="flex items-center justify-between mb-6">
             <h5 class="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <?= icon('chart', 'w-5 h-5 text-cyan-400') ?>
@@ -275,7 +275,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
                     Progress Evaluasi <?= ucfirst($userRole) ?>
                 <?php endif; ?>
             </h5>
-            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold uppercase tracking-wider">
+            <span class="px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider">
                 Live
             </span>
         </div>
@@ -344,7 +344,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
     </section>
     
     <!-- System Status Panel -->
-    <section class="bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-6 hover:border-purple-500/30 transition-all duration-500">
+    <section class="bg-white rounded-2xl border border-gray-200 p-6 hover:border-purple-500 transition-all duration-500">
         <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <?= icon('bulb', 'w-5 h-5 text-purple-400') ?>
             System Status
@@ -391,7 +391,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 
 <?php if (!empty($evaluationHistory)): ?>
 <!-- Chart -->
-<section class="mb-8 bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200 p-6">
+<section class="mb-8 bg-white rounded-2xl border border-gray-200 p-6">
     <h5 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
         <?= icon('chart', 'w-5 h-5 text-cyan-400') ?>
         Trend Nilai Evaluasi
@@ -400,7 +400,7 @@ renderHeader('DASHBOARD', 'Real-time Analytics', 'home');
 </section>
 
 <!-- Evaluation History Table -->
-<section class="bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-200">
+<section class="bg-white rounded-2xl border border-gray-200">
     <div class="flex items-center justify-between border-b border-gray-200/50 px-6 py-4">
         <h5 class="text-lg font-bold text-gray-900 flex items-center gap-2">
             <?= icon('clock', 'w-5 h-5 text-cyan-400') ?>
